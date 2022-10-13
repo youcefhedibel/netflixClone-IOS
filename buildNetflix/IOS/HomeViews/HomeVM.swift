@@ -9,7 +9,7 @@ import Foundation
 
 class HomeVM : ObservableObject{
     
-    
+    // String == Category Name
     @Published var movies: [String: [Movie]] = [:]
     
     public var allCategories: [String] {
@@ -34,3 +34,4 @@ class HomeVM : ObservableObject{
         return movies[cat] ?? []
     }
 }
+
