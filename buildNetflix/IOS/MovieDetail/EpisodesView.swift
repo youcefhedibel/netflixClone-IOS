@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct EpisodesView: View {
-    
+
     var episodes: [Episode]
     @Binding var showSeasonPicker: Bool
     @Binding var selectedSeason: Int
@@ -25,7 +25,7 @@ struct EpisodesView: View {
                     showSeasonPicker = true
                 }, label: {
                     Group{
-                        Text("Saison 1")
+                        Text("Saison \(selectedSeason)")
                         Image(systemName: "chevron.down")
                     }
                     .font(.system(size: 16))
@@ -42,8 +42,11 @@ struct EpisodesView: View {
                 episode in
                 VStack(alignment: .leading){
                     HStack{
-                        VideoPreviewImage(imageURL: episode.thumbnailURL, videoURL: episode.videoURL)
+                        VideoPreviewImage(
+                            imageURL: episode.thumbnailURL,
+                            videoURL: episode.videoURL)
                             .frame(width: 120, height: 70)
+                            .clipped()
 
                         VStack(alignment: .leading){
                             Text("\(episode.episodeNumber), \(episode.name)")
@@ -81,7 +84,7 @@ struct EpisodesView_Previews: PreviewProvider {
         ZStack {
             Color.black
                 .edgesIgnoringSafeArea(.all)
-            EpisodesView(episodes: allExampleEpisodes, showSeasonPicker: .constant(false), selectedSeason: .constant(1))
+            EpisodesView(episodes: allExampleEpisodes, showSeasonPicker: .constant(true), selectedSeason: .constant(1))
         }
     }
 }

@@ -11,26 +11,29 @@ struct MovieDetail: View {
     var movie: Movie
     
     let screen = UIScreen.main.bounds
-    @State private var showSeasonPicker = true
+    @State private var showSeasonPicker = false
     @State private var selectedSeason = 1
+    
+    var cancelButton: some View {
+        HStack{
+            Spacer()
+            Button(action: {
+                
+            }, label: {
+                Image(systemName: "xmark")
+                    .font(.system(size: 28))
+                
+            })
+           
+        }
+        .padding(.horizontal, 22)
+    }
     
     var body: some View {
         ZStack{
             Color.black
                 .edgesIgnoringSafeArea(.all)
-            ZStack {
-                HStack{
-                    Spacer()
-                    Button(action: {
-                        
-                    }, label: {
-                        Image(systemName: "xmark")
-                            .font(.system(size: 28))
-                    })
-                   
-                }
-                .padding(.horizontal, 22)
-                
+            ZStack(alignment: .top) {
                 ScrollView(.vertical, showsIndicators: false) {
                     VStack{
                         StandardHomeMovie(movie: movie)
@@ -66,7 +69,7 @@ struct MovieDetail: View {
                         }
                         .padding(.leading, 20)
                         
-                      
+                        CustomTabSwitcher(tabs: [.episodes, .trailers, .more], movies: exampleMovies, movie: movie, showSeasonPicker: $showSeasonPicker, selectedSeason: $selectedSeason)
                          
                     }
                     .padding(.horizontal, 10)
@@ -79,26 +82,46 @@ struct MovieDetail: View {
             }
             .foregroundColor(.white)
             if showSeasonPicker {
-                Color.black.opacity(0)
-                VStack{
-//                    Spacer()
-//                    Text("TESTING")
-//                        .background(.red)
-//                    Text("TESTING")
-//                        .background(.red)
-//                    Text("TESTING")
-//                        .background(Color.red)
-//                    Spacer()
+                Color.black.opacity(0.9)
+                Group{
+                    VStack(spacing: 40){
+                        Spacer()
+                        ForEach(0..<(movie.numberOfSeason ?? 0)){ season in
+                            Button(action: {
+                                self.selectedSeason = season + 1
+                                self.showSeasonPicker = false
+                            }, label: {
+                                Text("Season \(season + 1)")
+                                    .foregroundColor(selectedSeason == season + 1 ? .white : .gray)
+                                    .bold()
+                                    .font(.title2)
+                            })
+                        }
+                  
+                        Spacer()
+                        Button(action: {
+                            self.showSeasonPicker = false
+                        }, label: {
+                           Image(systemName: "x.circle.fill")
+                                .foregroundColor( Color.white)
+                                .font(.system(size: 40))
+                                .scaleEffect(x: 1.1)
+                        })
+                        .padding(.bottom, 30)
+                    }
+
                 }
+                .edgesIgnoringSafeArea(.all)
             }
             
         }
+        .navigationBarItems(trailing: cancelButton)
     }
 }
 
 struct MovieDetail_Previews: PreviewProvider {
     static var previews: some View {
-        MovieDetail(movie: examplemovie6)
+        MovieDetail(movie: examplemovie1)
     }
 }
 
@@ -133,7 +156,6 @@ struct RatingView: View {
                 .foregroundColor(.white)
                 .font(.system(size: 12))
                 .bold()
-            
             
         }.frame(width: 50, height: 20)
     }

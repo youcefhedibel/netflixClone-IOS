@@ -41,6 +41,7 @@ let examplemovie1 = Movie(
     creator: "Barab bo Boran",
     cast: "Louis Hosman, Oliver Massousi",
     moreLikeThisMovie: exampleMovies,
+    episodes: allExampleEpisodes,
     promotionHeadline: "Whatch Season 6 NOW !",
     trailers: exampleTrailers
 )

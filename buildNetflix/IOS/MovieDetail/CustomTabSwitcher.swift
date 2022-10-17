@@ -8,9 +8,13 @@ import SwiftUI
 
 struct CustomTabSwitcher: View {
     @State private var currentTab: CustomTab = .episodes
+    
     var tabs: [CustomTab]
     var movies: [Movie]
     var movie: Movie
+    
+    @Binding var showSeasonPicker: Bool
+    @Binding var selectedSeason:  Int
     
     var body: some View {
         VStack{
@@ -39,10 +43,8 @@ struct CustomTabSwitcher: View {
             }
             switch currentTab {
             case .episodes:
-                SmallVerticalButton(text: "TEST", isOnImage: "", isOffImage: "", isOn: true){
-                    
-                }
-            case .trailer:
+                EpisodesView(episodes: movie.episodes ?? [] , showSeasonPicker: $showSeasonPicker, selectedSeason: $selectedSeason)
+            case .trailers:
                 TrailerList(trailers: movie.trailers)
             case .more:
                 MoreLikeThis(movies: movie.moreLikeThisMovie)
@@ -57,7 +59,7 @@ struct CustomTabSwitcher: View {
 enum CustomTab: String {
     
     case episodes = "EPISODE"
-    case trailer = "TRAILERS & MORE"
+    case trailers = "TRAILERS & MORE"
     case more = "MORE LIKE THIS"
     
 }
@@ -71,7 +73,7 @@ struct CustomTabSwitcher_Previews: PreviewProvider {
         ZStack {
             Color.black
                 .edgesIgnoringSafeArea(.all)
-            CustomTabSwitcher(tabs: [.episodes, .trailer, .more], movies: exampleMovies, movie: examplemovie1)
+            CustomTabSwitcher(tabs: [.episodes, .trailers, .more ], movies: exampleMovies, movie: examplemovie1, showSeasonPicker: .constant(false), selectedSeason: .constant(1))
         }
     }
 }
